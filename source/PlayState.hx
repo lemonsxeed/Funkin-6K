@@ -108,6 +108,7 @@ class PlayState extends MusicBeatState
 	private var camGame:FlxCamera;
 
 	private var cutTime:Float;
+	private var shaggyT:FlxTrail;
 	private var ctrTime:Float = 0;
 	private var notice:FlxText;
 	private var nShadow:FlxText;
@@ -222,7 +223,122 @@ class PlayState extends MusicBeatState
 		{
 			case 'tutorial':
 				dialogue = ["Hey you're pretty cute.", 'suck my clit or you die.'];
-			
+			case 'where-are-you':
+				//the text to appear;
+				dialogue = [
+					"Hey you guys",
+					"I'm looking for a dog that got lost\nin this mansion",
+					"His name is scooby, have you like seen him\nor anything?",
+					"beep bap boop", //na man, haven't seen any dog. Hey are u good at singing? we came here for a battle.
+					"You wanna like, sing?\nBut I haven't found scoobs yet",
+					"bop bee bap", //This house is a mess, there ain't nothing u can do but sing! I hope yo dog isn't fuckin dead tho
+					"I sure hope so too...",
+					"Alright, just a couple of songs though, I\ndon't know that many"
+				];
+				//the sprites to go along with text (n for no change)
+				dface = [
+						"f_sh_ser", "n", "n",
+						"f_bf",
+						"f_sh_con",
+						"f_bf",
+						"f_sh_ser",
+						"f_sh_smug"
+						];
+				//the sides of the faces (1=left, -1=right and flipped)
+				dside = [1, 1, 1, -1, 1, -1, 1, 1];
+			case 'eruption':
+				dialogue = [
+					"Zoinks! I lost control for a second...",
+					"I'm sorry man, don't wanna make it\nunfair for you or anything.",
+					"beep boop", //adequate sentiment bitch. uh i mean let's keep singing bro!!
+					"Okay, like, get ready now and stuff"
+				];
+				dface = [
+						"f_sh",
+						"f_sh",
+						"f_bf",
+						"f_sh_smug"
+						];
+				dside = [1, 1, -1, 1];
+			case 'kaio-ken':
+				dialogue = [
+					"You're like, actually good and stuff",
+					"I don't wanna like bore you, so I'll\nsing faster this time",
+					"beep boop boop bap bee", //yeah like that's gonna make it harder for me. ur too easy man! come up with something... not boring!
+					"...",
+					"Alright, alright...\nHere we go man!",
+				];
+				dface = [
+						"f_sh",
+						"f_sh",
+						"f_bf",
+						"f_sh_ser",
+						"f_sh_smug"
+						];
+				dside = [1, 1, -1, 1, 1];
+			case 'whats-new':
+				dialogue = [
+					"You haven't seen scoob around?",
+					"bap boop",
+					"Oh gosh! I haven't like, found him either!\nHe must be so scared...",
+					"boop bap",
+					"Huh? sing again?", //Did I fuckin stutter? Bring it on bitch, I'm tired of your shit. I didn't even care for your dog.
+					"You know, maybe singing Scooby's\nfavorite song might call his attention\nand stuff",
+					"If he can hear us...",
+					"Alright, here we go."
+				];
+				dface = [
+						"f_sh_ser",
+						"f_bf",
+						"f_sh_con",
+						"f_bf",
+						"f_sh_con",
+						"f_sh_ser",
+						"f_sh_con",
+						"f_sh"
+						];
+				dside = [1, -1, 1, -1, 1, 1, 1, 1];
+			case 'blast':
+				dialogue = [
+					"...",
+					"...",
+					"...",
+					"Scooby's my closest friend y'know",
+					"We've been together for the last 70 years!",
+					"I stopped my aging when I was like 17.",
+					"I didn't do the same to my friends because it\nwould be selfish for me to not let them\nrest and stuff...",
+					"But zoinks! Scooby was so insistent.\nhe told me he'd never regret his decision if\nit meant to spend eternity side by side.",
+					"Now he's the only one I have left...",
+					"beep bee bap!",
+					"...",
+					"I'm uh.. gonna make some noise."
+				];
+				dface = [
+						"f_sh", "f_sh_ser",
+						"f_bf",
+						"f_sh_ser", "f_sh", "f_sh_ser", "f_sh_con", "f_sh_pens", "f_sh_sad",
+						"f_bf",
+						"f_sh_ang", "f_sh_smug"
+						];
+				dside = [1, 1, -1, 1, 1, 1, 1, 1, 1, -1, 1, 1];
+			case 'super-saiyan':
+				dialogue = [
+					"beep boo baa", 
+					"bap bee beep boop bee", 
+					"bap bap bee pop", 
+					"That's like, really rude man...\nI really-",
+					"bee boop",
+					"...",
+					"Heh.",
+					"Prick."
+				];
+				dface = [
+						"f_bf", "n", "n",
+						"f_sh_con",
+						"f_bf",
+						"f_sh_ang", "f_sh_smug", "n"
+						];
+				dside = [-1, -1, -1, 1, -1, 1, 1, 1, 1];
 			case 'dadbattle':
 				
 			case 'garden-havoc':
@@ -539,6 +655,107 @@ class PlayState extends MusicBeatState
 				add(waveSpriteFG);
 			 */
 		}
+		else if (SONG.song.toLowerCase() == 'where-are-you' || SONG.song.toLowerCase() == 'kaio-ken' || SONG.song.toLowerCase() == 'eruption' || SONG.song.toLowerCase() == 'blast' || SONG.song.toLowerCase() == 'whats-new' || SONG.song.toLowerCase() == 'super-saiyan')
+		{
+			//dad.powerup = true;
+			defaultCamZoom = 0.9;
+			curStage = 'stage_2';
+			var bg:FlxSprite = new FlxSprite(-400, -160).loadGraphic(Paths.image('bg_lemon'));
+			bg.setGraphicSize(Std.int(bg.width * 1.5));
+			bg.antialiasing = true;
+			bg.scrollFactor.set(0.95, 0.95);
+			bg.active = false;
+			add(bg);
+
+			if (SONG.song.toLowerCase() == 'kaio-ken')
+			{
+				var waveEffectBG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 3, 2); //creo que esta weá no hace nada
+			}
+		}
+		else if (SONG.song.toLowerCase() == 'god-eater')
+		{
+			defaultCamZoom = 0.65;
+			curStage = 'sky';
+
+			var sky = new FlxSprite(-850, -850);
+			sky.frames = Paths.getSparrowAtlas('god_bg');
+			sky.animation.addByPrefix('sky', "bg", 30);
+			sky.setGraphicSize(Std.int(sky.width * 0.8));
+			sky.animation.play('sky');
+			sky.scrollFactor.set(0.1, 0.1);
+			sky.antialiasing = true;
+			add(sky);
+
+			var bgcloud = new FlxSprite(-850, -1250);
+			bgcloud.frames = Paths.getSparrowAtlas('god_bg');
+			bgcloud.animation.addByPrefix('c', "cloud_smol", 30);
+			//bgcloud.setGraphicSize(Std.int(bgcloud.width * 0.8));
+			bgcloud.animation.play('c');
+			bgcloud.scrollFactor.set(0.3, 0.3);
+			bgcloud.antialiasing = true;
+			add(bgcloud);
+
+			add(new MansionDebris(300, -800, 'norm', 0.4, 1, 0, 1));
+			add(new MansionDebris(600, -300, 'tiny', 0.4, 1.5, 0, 1));
+			add(new MansionDebris(-150, -400, 'spike', 0.4, 1.1, 0, 1));
+			add(new MansionDebris(-750, -850, 'small', 0.4, 1.5, 0, 1));
+
+			/*
+			add(new MansionDebris(-300, -1700, 'norm', 0.5, 1, 0, 1));
+			add(new MansionDebris(-600, -1100, 'tiny', 0.5, 1.5, 0, 1));
+			add(new MansionDebris(900, -1850, 'spike', 0.5, 1.2, 0, 1));
+			add(new MansionDebris(1500, -1300, 'small', 0.5, 1.5, 0, 1));
+			*/
+
+			add(new MansionDebris(-300, -1700, 'norm', 0.75, 1, 0, 1));
+			add(new MansionDebris(-1000, -1750, 'rect', 0.75, 2, 0, 1));
+			add(new MansionDebris(-600, -1100, 'tiny', 0.75, 1.5, 0, 1));
+			add(new MansionDebris(900, -1850, 'spike', 0.75, 1.2, 0, 1));
+			add(new MansionDebris(1500, -1300, 'small', 0.75, 1.5, 0, 1));
+			add(new MansionDebris(-600, -800, 'spike', 0.75, 1.3, 0, 1));
+			add(new MansionDebris(-1000, -900, 'small', 0.75, 1.7, 0, 1));
+
+			var fgcloud = new FlxSprite(-1150, -2900);
+			fgcloud.frames = Paths.getSparrowAtlas('god_bg');
+			fgcloud.animation.addByPrefix('c', "cloud_big", 30);
+			//bgcloud.setGraphicSize(Std.int(bgcloud.width * 0.8));
+			fgcloud.animation.play('c');
+			fgcloud.scrollFactor.set(0.9, 0.9);
+			fgcloud.antialiasing = true;
+			add(fgcloud);
+
+			var bg:FlxSprite = new FlxSprite(-400, -160).loadGraphic(Paths.image('bg_lemon'));
+			bg.setGraphicSize(Std.int(bg.width * 1.5));
+			bg.antialiasing = true;
+			bg.scrollFactor.set(0.95, 0.95);
+			bg.active = false;
+			add(bg);
+
+			var techo = new FlxSprite(0, -20);
+			techo.frames = Paths.getSparrowAtlas('god_bg');
+			techo.animation.addByPrefix('r', "broken_techo", 30);
+			techo.setGraphicSize(Std.int(techo.frameWidth * 1.5));
+			techo.animation.play('r');
+			techo.scrollFactor.set(0.95, 0.95);
+			techo.antialiasing = true;
+			add(techo);
+
+			gf_rock = new FlxSprite(20, 20);
+			gf_rock.frames = Paths.getSparrowAtlas('god_bg');
+			gf_rock.animation.addByPrefix('rock', "gf_rock", 30);
+			gf_rock.animation.play('rock');
+			gf_rock.scrollFactor.set(0.8, 0.8);
+			gf_rock.antialiasing = true;
+			add(gf_rock);
+
+			rock = new FlxSprite(20, 20);
+			rock.frames = Paths.getSparrowAtlas('god_bg');
+			rock.animation.addByPrefix('rock', "rock", 30);
+			rock.animation.play('rock');
+			rock.scrollFactor.set(1, 1);
+			rock.antialiasing = true;
+			add(rock);
+		}
 		else
 		{
 			defaultCamZoom = 0.8;
@@ -677,6 +894,21 @@ class PlayState extends MusicBeatState
 
 		add(gf);
 
+		if (SONG.player2 == 'pshaggy')
+		{
+			shaggyT = new FlxTrail(dad, null, 5, 7, 0.3, 0.001);
+			add(shaggyT);
+
+			doorFrame = new FlxSprite(-160, 160).loadGraphic(Paths.image('doorframe'));
+			doorFrame.updateHitbox();
+			doorFrame.setGraphicSize(1);
+			doorFrame.alpha = 0;
+			doorFrame.antialiasing = true;
+			doorFrame.scrollFactor.set(1, 1);
+			doorFrame.active = false;
+			add(doorFrame);
+		}
+
 		// Shitty layering but whatev it works LOL
 		if (curStage == 'limo')
 			add(limo);
@@ -794,6 +1026,86 @@ class PlayState extends MusicBeatState
 
 		// cameras = [FlxG.cameras.list[1]];
 		startingSong = true;
+
+		if (isStoryMode)
+		{
+			switch (curSong.toLowerCase())
+			{
+				case "tutorial":
+					startCountdown();
+					FlxG.camera.zoom = 1;
+				case "where-are-you" | "whats-new":
+					schoolIntro(1);
+				case "super-saiyan":
+					//FlxG.sound.music.onComplete = ssCutscene;
+					schoolIntro(0);
+
+					dad.powerup = true;
+					dad.dance();
+
+					camFollow = new FlxObject(0, 0, 1, 1);
+
+					camFollow.setPosition(dad.getMidpoint().x - 100, dad.getMidpoint().y - 0);
+
+					add(camFollow);
+					FlxG.camera.follow(camFollow, LOCKON, 0.04);
+					s_ending = true;
+				case "god-eater":
+					s_ending = true;
+					if (!Main.skipDes)
+					{
+						godIntro();
+						Main.skipDes = true;
+					}
+					else
+					{
+						godCutEnd = true;
+						godMoveGf = true;
+						godMoveSh = true;
+						new FlxTimer().start(1, function(tmr:FlxTimer)
+						{
+							startCountdown();
+						});
+					}
+				default:
+					schoolIntro(0);
+			}
+		}
+		else
+		{
+			var cs = curSong.toLowerCase();
+			if (cs == 'kaio-ken' || cs == 'super-saiyan' || cs == 'blast')
+			{
+				dad.powerup = true;
+
+				camFollow = new FlxObject(0, 0, 1, 1);
+
+				camFollow.setPosition(dad.getMidpoint().x - 100, dad.getMidpoint().y - 0);
+
+				add(camFollow);
+				FlxG.camera.follow(camFollow, LOCKON, 0.04);
+			}
+
+			switch (cs)
+			{		
+				case 'god-eater':
+					godCutEnd = true;
+					godMoveGf = true;
+					godMoveSh = true;
+					new FlxTimer().start(1, function(tmr:FlxTimer)
+					{
+						startCountdown();
+					});
+				default:
+					startCountdown();
+			}
+		}
+
+		if (!loadRep)
+			rep = new Replay("na");
+
+		super.create();
+	}
 
 	function foreground()
 	{
@@ -946,6 +1258,72 @@ class PlayState extends MusicBeatState
 				});
 
 				new FlxTimer().start(0.001, function(prs:FlxTimer)
+				{
+					var skip:Bool = false;
+					if (dialogue[curr_dial] == "Why are you saying that" && curr_char >= 16)
+					{
+						skip = true;
+					}
+					if (FlxG.keys.justReleased.ANY || skip)
+					{
+						if ((curr_char <= dialogue[curr_dial].length) && !skip)
+						{
+							curr_char = dialogue[curr_dial].length;
+						}
+						else
+						{
+							curr_char = 0;
+							curr_dial ++;
+							if (curr_dial >= dialogue.length)
+							{
+								if (cs_reset)
+								{
+									if (skip)
+									{
+										tbox.alpha = 0;
+									}
+									cs_wait = false;
+									cs_time ++;
+								}
+								else
+								{
+									if (curSong.toLowerCase() != "kaio-ken" && curSong.toLowerCase() != "blast")
+									{
+										startCountdown();
+									}
+									else
+									{
+										cutTime = 0;
+										superShaggy();
+									}
+								}
+								talk = 0;
+								dropText.alpha = 0;
+								curr_dial = 0;
+								tb_appear = 0;
+							}
+							else
+							{
+								if (dialogue[curr_dial] == sh_kill_line)
+								{
+									cs_mus.stop();
+								}
+								fimage = dface[curr_dial];
+								if (fimage != "n")
+								{
+									fsprite.destroy();
+									faceRender();
+									fsprite.flipX = false;
+									if (dside[curr_dial] == -1)
+									{
+										fsprite.flipX = true;
+									}
+								}
+							}
+						}
+					}
+					prs.reset(0.001 / (FlxG.elapsed / (1/60)));
+				});
 			}
 		}
 	}
@@ -963,6 +1341,45 @@ class PlayState extends MusicBeatState
 		fsprite.scrollFactor.set();
 		add(fsprite);
 	}
+	function superShaggy()
+	{
+		new FlxTimer().start(0.008, function(ct:FlxTimer)
+		{
+			switch (cutTime)
+			{
+				case 0:
+					camFollow = new FlxObject(0, 0, 1, 1);
+
+					camFollow.setPosition(dad.getMidpoint().x - 100, dad.getMidpoint().y - 0);
+
+					add(camFollow);
+					FlxG.camera.follow(camFollow, LOCKON, 0.04);
+				case 15:
+					dad.playAnim('power');
+				case 48:
+					dad.playAnim('idle_s');
+					dad.powerup = true;
+					burst = new FlxSprite(-1110, 0);
+					FlxG.sound.play(Paths.sound('burst'));
+					remove(burst);
+					burst = new FlxSprite(dad.getMidpoint().x - 1000, dad.getMidpoint().y - 100);
+					burst.frames = Paths.getSparrowAtlas('shaggy');
+					burst.animation.addByPrefix('burst', "burst", 30);
+					burst.animation.play('burst');
+					//burst.setGraphicSize(Std.int(burst.width * 1.5));
+					burst.antialiasing = true;
+					add(burst);
+
+					FlxG.sound.play(Paths.sound('powerup'), 1);
+				case 62:
+					burst.y = 0;
+					remove(burst);
+				case 95:
+					FlxG.camera.angle = 0;
+				case 130:
+					startCountdown();
+			}
+
 			var ssh:Float = 45;
 			var stime:Float = 30;
 			var corneta:Float = (stime - (cutTime - ssh)) / stime;
@@ -1005,6 +1422,140 @@ class PlayState extends MusicBeatState
 		if (SONG.song.toLowerCase() == "garden-havoc")
 		{
 			c_div = 0.75;
+		}
+
+		if (SONG.song.toLowerCase() == "kaio-ken" || SONG.song.toLowerCase() == "blast")
+		{
+			new FlxTimer().start(0.002, function(cbt:FlxTimer)
+			{
+				if (ctrTime == 0)
+				{
+					var cText = "S      D      F      J      K      L";
+
+					if (FlxG.save.data.dfjk == 0)
+					{
+						cText = "A      S      D";
+					}
+					else if (FlxG.save.data.dfjk == 2)
+					{
+						cText = "Z      X      C      1      2      3";
+					}
+					notice = new FlxText(0, 0, 0, cText, 32);
+					notice.x = FlxG.width * 0.572;
+					notice.y = 120;
+					if (FlxG.save.data.downscroll)
+					{
+						notice.y = FlxG.height - 200;
+					}
+					notice.scrollFactor.set();
+
+					nShadow = new FlxText(0, 0, 0, cText, 32);
+					nShadow.x = notice.x + 4;
+					nShadow.y = notice.y + 4;
+					nShadow.scrollFactor.set();
+
+					nShadow.alpha = notice.alpha;
+					nShadow.color = 0x00000000;
+
+					notice.alpha = 0;
+
+					add(nShadow);
+					add(notice);
+				}
+				else
+				{
+					if (ctrTime < 300)
+					{
+						if (notice.alpha < 1)
+						{
+							notice.alpha += 0.02;
+						}
+					}
+					else
+					{
+						notice.alpha -= 0.02;
+					}
+				}
+				nShadow.alpha = notice.alpha;
+
+				ctrTime ++;
+				cbt.reset(0.004 / (FlxG.elapsed / (1/60)));
+			});
+		}
+
+		if (SONG.song.toLowerCase() == "god-eater")
+		{
+			new FlxTimer().start(0.002, function(cbt:FlxTimer)
+			{
+				if (ctrTime == 0)
+				{
+					var cText:Array<String> = ['A', 'S', 'D', 'F', 'S\nP\nA\nC\nE', 'H', 'J', 'K', 'L'];
+
+					if (FlxG.save.data.dfjk == 2)
+					{
+						cText = ['A', 'S', 'D', 'F', 'S\nP\nA\nC\nE', '1', '2', '3', 'R\nE\nT\nU\nR\nN'];
+					}
+					var nJx = 100;
+					for (i in 0...9)
+					{
+						noticeB[i] = new FlxText(0, 0, 0, cText[i], 32);
+						noticeB[i].x = FlxG.width * 0.5 + nJx*i + 55;
+						noticeB[i].y = 20;
+						if (FlxG.save.data.downscroll)
+						{
+							noticeB[i].y = FlxG.height - 120;
+							switch (i)
+							{
+								case 4:
+									noticeB[i].y -= 160;
+								case 8:
+									if (FlxG.save.data.dfjk == 2)
+									noticeB[i].y -= 190;
+							}
+						}
+						noticeB[i].scrollFactor.set();
+						//notice[i].alpha = 0;
+
+						nShadowB[i] = new FlxText(0, 0, 0, cText[i], 32);
+						nShadowB[i].x = noticeB[i].x + 4;
+						nShadowB[i].y = noticeB[i].y + 4;
+						nShadowB[i].scrollFactor.set();
+
+						nShadowB[i].alpha = noticeB[i].alpha;
+						nShadowB[i].color = 0x00000000;
+
+						//notice.alpha = 0;
+
+						add(nShadowB[i]);
+						add(noticeB[i]);
+					}
+
+					
+				}
+				else
+				{
+					for (i in 0...9)
+					{
+						if (ctrTime < 600)
+						{
+							if (noticeB[i].alpha < 1)
+							{
+								noticeB[i].alpha += 0.02;
+							}
+						}
+						else
+						{
+							noticeB[i].alpha -= 0.02;
+						}
+					}
+				}
+				for (i in 0...9)
+				{
+					nShadowB[i].alpha = noticeB[i].alpha;
+				}
+				ctrTime ++;
+				cbt.reset(0.004);
+			});
 		}
 
 		startTimer = new FlxTimer().start(Conductor.crochet / (1000 / c_div), function(tmr:FlxTimer)
@@ -1315,6 +1866,13 @@ class PlayState extends MusicBeatState
 
 			babyArrow.updateHitbox();
 			babyArrow.scrollFactor.set();
+
+			if (!isStoryMode || curSong.toLowerCase() == 'kaio-ken')
+			{
+				babyArrow.y -= 10;
+				babyArrow.alpha = 0;
+				FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
+			}
 
 			babyArrow.ID = i;
 
@@ -1731,6 +2289,9 @@ class PlayState extends MusicBeatState
 					case 'dad':
 						camFollow.y = dad.getMidpoint().y - 100;
 						camFollow.x = dad.getMidpoint().x - 100;
+					case 'pshaggy':
+						camFollow.y = dad.getMidpoint().y + 0;
+						camFollow.x = dad.getMidpoint().x + 100;
 				}
 
 				if (dad.curCharacter == 'mom')
@@ -1803,6 +2364,54 @@ class PlayState extends MusicBeatState
 			}
 		}
 		//yyyy messi meteee un golazoooooooO!!!!!
+		if (curSong.toLowerCase() == 'where-are-you')
+		{
+			switch (curBeat)
+			{
+				case 12:
+					burst = new FlxSprite(-1110, 0);
+				case 245:
+					if (burst.y == 0)
+					{
+						FlxG.sound.play(Paths.sound('burst'));
+						remove(burst);
+						burst = new FlxSprite(dad.getMidpoint().x - 1000, dad.getMidpoint().y - 100);
+						burst.frames = Paths.getSparrowAtlas('shaggy');
+						burst.animation.addByPrefix('burst', "burst", 30);
+						burst.animation.play('burst');
+						//burst.setGraphicSize(Std.int(burst.width * 1.5));
+						burst.antialiasing = true;
+						add(burst);
+					}
+
+					/*
+					var bgLimo:FlxSprite = new FlxSprite(-200, 480);
+					bgLimo.frames = Paths.getSparrowAtlas('limo/bgLimo');
+					bgLimo.animation.addByPrefix('drive', "background limo pink", 24);
+					bgLimo.animation.play('drive');
+					bgLimo.scrollFactor.set(0.4, 0.4);
+					add(bgLimo);
+					*/
+					// FlxG.sound.music.stop();
+					// FlxG.switchState(new TitleState());
+				case 246:
+					remove(burst);
+			}
+		}
+		if (curSong.toLowerCase() == 'kaio-ken')
+		{
+			if (curBeat == 48 || curBeat == 144 || curBeat == 56 * 4 || curBeat == 84 * 4 || curBeat == 104 * 4)
+			{
+				remove(shaggyT);
+				shaggyT = new FlxTrail(dad, null, 4, 1, 0.3, 0.005);
+				add(shaggyT);
+				shaggyT.delay = Std.int(Math.round(1 / (FlxG.elapsed / (1/60))));
+			}
+			else if (curBeat == 80 || curBeat == 192 || curBeat == 60 * 4 || curBeat == 96 * 4 || curBeat == 108 * 4)
+			{
+				remove(shaggyT);
+			}
+		}
 
 		if (false)//curSong == 'Bopeebo')
 		{
@@ -2083,6 +2692,29 @@ class PlayState extends MusicBeatState
 					LoadingState.loadAndSwitchState(new PlayState());
 				}
 			}
+			else
+			{
+				s_ending = false;
+				switch (SONG.song.toLowerCase())
+				{
+					case ('super-saiyan'):
+						if (FlxG.save.data.progress < 1)
+						{
+							FlxG.save.data.progress = 1;
+							FlxG.save.flush();
+						}
+						ssCutscene();
+					case ('god-eater'):
+						Main.menuBad = false;
+						if (FlxG.save.data.progress < 2)
+						{
+							FlxG.save.data.progress = 2;
+							FlxG.save.flush();
+						}
+						finalCutscene();
+				}
+			}
+		}
 		else
 		{
 			trace('WENT BACK TO FREEPLAY??');
@@ -3321,6 +3953,568 @@ class PlayState extends MusicBeatState
 		if (isHalloween && FlxG.random.bool(10) && curBeat > lightningStrikeBeat + lightningOffset)
 		{
 			lightningStrikeShit();
+		}
+	}
+
+	var curLight:Int = 0;
+	var scoob:Character;
+	var cs_time:Int = 0;
+	var cs_wait:Bool = false;
+	var cs_zoom:Float = 1;
+	var cs_slash_dim:FlxSprite;
+	var cs_sfx:FlxSound;
+	var cs_mus:FlxSound;
+	var sh_body:FlxSprite;
+	var sh_head:FlxSprite;
+	var cs_cam:FlxObject;
+	var cs_black:FlxSprite;
+	var sh_ang:FlxSprite;
+	var sh_ang_eyes:FlxSprite;
+	var cs_bg:FlxSprite;
+	var nex:Float = 1;
+
+	public function ssCutscene()
+	{
+		cs_cam = new FlxObject(0, 0, 1, 1);
+		cs_cam.x = 605;
+		cs_cam.y = 410;
+		add(cs_cam);
+		remove(camFollow);
+		camFollow.destroy();
+		FlxG.camera.follow(cs_cam, LOCKON, 0.01);
+
+		Main.menuBad = true;
+		new FlxTimer().start(0.002, function(tmr:FlxTimer)
+		{
+			switch (cs_time)
+			{
+				case 1:
+					cs_zoom = 0.65;
+				case 25:
+					//scoob = new Character(1700, 290, 'scooby', false);
+					scoob.playAnim('walk', true);
+					scoob.x = 1700;
+					scoob.y = 290;
+					//scoob.playAnim('walk');
+				case 240:
+					scoob.playAnim('idle', true);
+				case 340:
+					burstRelease(dad.getMidpoint().x, dad.getMidpoint().y);
+
+					dad.powerup = false;
+					dad.playAnim('idle', true);
+				case 390:
+					remove(burst);
+				case 420:
+					if (!cs_wait)
+					{
+						csDial('found_scooby');
+						schoolIntro(0);
+						cs_wait = true;
+						cs_reset = true;
+
+						cs_mus = FlxG.sound.load(Paths.sound('cs_happy'));
+						cs_mus.play();
+						cs_mus.looped = true;
+					}
+				case 540:
+					scoob.playAnim('scare', true);
+					cs_mus.fadeOut(2, 0);
+				case 900:
+					FlxG.sound.play(Paths.sound('blur'));
+					scoob.playAnim('blur', true);
+					scoob.x -= 200;
+					scoob.y += 100;
+					scoob.angle = 23;
+					dad.playAnim('catch', true);
+				case 903:
+					scoob.x = -4000;
+					scoob.angle = 0;
+				case 940:
+					dad.playAnim('hold', true);
+					cs_sfx = FlxG.sound.load(Paths.sound('scared'));
+					cs_sfx.play();
+					cs_sfx.looped = true;
+				case 1200:
+					if (!cs_wait)
+					{
+						csDial('scooby_hold_talk');
+						schoolIntro(0);
+						cs_wait = true;
+						cs_reset = true;
+
+						cs_mus.stop();
+						cs_mus = FlxG.sound.load(Paths.sound('cs_drums'));
+						cs_mus.play();
+						cs_mus.looped = true;
+					}
+				case 1201:
+					cs_sfx.stop();
+					cs_mus.stop();
+					FlxG.sound.play(Paths.sound('counter_back'));
+					cs_slash_dim = new FlxSprite(-500, -400).makeGraphic(FlxG.width * 4, FlxG.height * 4, FlxColor.WHITE);
+					cs_slash_dim.scrollFactor.set();
+					add(cs_slash_dim);
+					dad.playAnim('h_half', true);
+					gf.playAnim('kill', true);
+					scoob.playAnim('half', true);
+					scoob.x += 4100;
+					scoob.y -= 150;
+
+					scoob.x -= 90;
+					scoob.y -= 252;
+				case 1700:
+					scoob.playAnim('fall', true);
+					cs_cam.x -= 150;
+				case 1740:
+					FlxG.sound.play(Paths.sound('body_fall'));
+				case 2000:
+					if (!cs_wait)
+					{
+						gf.playAnim('danceRight', true);
+						csDial('gf_sass');
+						schoolIntro(0);
+						cs_wait = true;
+						cs_reset = true;
+					}
+				case 2150:
+					dad.playAnim('fall', true);
+				case 2180:
+					FlxG.sound.play(Paths.sound('shaggy_kneel'));
+				case 2245:
+					FlxG.sound.play(Paths.sound('body_fall'));
+				case 2280:
+					dad.playAnim('kneel', true);
+					sh_head = new FlxSprite(440, 100);
+					sh_head.y = 100 + FlxG.random.int(-0, 0);
+					sh_head.frames = Paths.getSparrowAtlas('bshaggy');
+					sh_head.animation.addByPrefix('idle', "bshaggy_head_still", 30);
+					sh_head.animation.addByPrefix('turn', "bshaggy_head_transform", 30);
+					sh_head.animation.addByPrefix('idle2', "bsh_head2_still", 30);
+					sh_head.animation.play('turn');
+					sh_head.animation.play('idle');
+					sh_head.antialiasing = true;
+
+					sh_ang = new FlxSprite(0, 0);
+					sh_ang.frames = Paths.getSparrowAtlas('bshaggy');
+					sh_ang.animation.addByPrefix('idle', "bsh_angry", 30);
+					sh_ang.animation.play('idle');
+					sh_ang.antialiasing = true;
+
+					sh_ang_eyes = new FlxSprite(0, 0);
+					sh_ang_eyes.frames = Paths.getSparrowAtlas('bshaggy');
+					sh_ang_eyes.animation.addByPrefix('stare', "bsh_eyes", 30);
+					sh_ang_eyes.animation.play('stare');
+					sh_ang_eyes.antialiasing = true;
+
+					cs_bg = new FlxSprite(-500, -80);
+					cs_bg.frames = Paths.getSparrowAtlas('cs_bg');
+					cs_bg.animation.addByPrefix('back', "cs_back_bg", 30);
+					cs_bg.animation.addByPrefix('stare', "cs_bg", 30);
+					cs_bg.animation.play('back');
+					cs_bg.antialiasing = true;
+					cs_bg.setGraphicSize(Std.int(cs_bg.width * 1.1));
+
+					cs_sfx = FlxG.sound.load(Paths.sound('powerup'));
+				case 2500:
+					add(cs_bg);
+					add(sh_head);
+
+					sh_body = new FlxSprite(200, 250);
+					sh_body.frames = Paths.getSparrowAtlas('bshaggy');
+					sh_body.animation.addByPrefix('idle', "bshaggy_body_still", 30);
+					sh_body.animation.play('idle');
+					sh_body.antialiasing = true;
+					add(sh_body);
+
+					cs_mus = FlxG.sound.load(Paths.sound('cs_cagaste'));
+					cs_mus.looped = false;
+					cs_mus.play();
+					cs_cam.x += 150;
+					FlxG.camera.follow(cs_cam, LOCKON, 1);
+				case 3100:
+					burstRelease(1000, 300);
+				case 3580:
+					burstRelease(1000, 300);
+					cs_sfx.play();
+					cs_sfx.looped = false;
+					FlxG.camera.angle = 10;
+				case 4000:
+					burstRelease(1000, 300);
+					cs_sfx.play();
+					FlxG.camera.angle = -20;
+					sh_head.animation.play('turn');
+					sh_head.offset.set(0, 60);
+
+					cs_sfx = FlxG.sound.load(Paths.sound('charge'));
+					cs_sfx.play();
+					cs_sfx.looped = true;
+				case 4003:
+					cs_mus.play(true, 12286 - 337);
+				case 4065:
+					sh_head.animation.play('idle2');
+				case 4550:
+					remove(sh_head);
+					remove(sh_body);
+					cs_sfx.stop();
+
+
+					sh_ang.x = -140;
+					sh_ang.y = -5;
+
+					sh_ang_eyes.x = 688;
+					sh_ang_eyes.y = 225;
+
+					add(sh_ang);
+					add(sh_ang_eyes);
+
+					cs_bg.animation.play('stare');
+
+					cs_black = new FlxSprite(-500, -400).makeGraphic(FlxG.width * 4, FlxG.height * 4, FlxColor.BLACK);
+					cs_black.scrollFactor.set();
+					add(cs_black);
+
+					cs_mus.play(true, 16388);
+				case 6000:
+					cs_black.alpha = 2;
+					cs_mus.stop();
+				case 6100:
+					endSong();
+			}
+			if (cs_time >= 25 && cs_time <= 240)
+			{
+				scoob.x -= 6;
+				scoob.playAnim('walk');
+			}
+			if (cs_time > 240 && cs_time < 540)
+			{
+				scoob.playAnim('idle');
+			}
+			if (cs_time > 940 && cs_time < 1201)
+			{
+				dad.playAnim('hold');
+			}
+			if (cs_time > 1201 && cs_time < 2500)
+			{
+				cs_slash_dim.alpha -= 0.003;
+			}
+			if (cs_time >= 2500 && cs_time < 4550)
+			{
+				cs_zoom += 0.0001;
+			}
+			if (cs_time >= 5120 && cs_time <= 6000)
+			{
+				cs_black.alpha -= 0.0015;
+			}
+			if (cs_time >= 3580 && cs_time < 4000)
+			{
+				sh_head.y = 100 + FlxG.random.int(-5, 5);
+			}
+			if (cs_time >= 4000 && cs_time <= 4548)
+			{
+				sh_head.x = 440 + FlxG.random.int(-10, 10);
+				sh_body.x = 200 + FlxG.random.int(-5, 5);
+			}
+
+			if (cs_time == 3400 || cs_time == 3450 || cs_time == 3500 || cs_time == 3525 || cs_time == 3550 || cs_time == 3560 || cs_time == 3570)
+			{
+				burstRelease(1000, 300);
+			}
+
+			FlxG.camera.zoom += (cs_zoom - FlxG.camera.zoom) / 12;
+			FlxG.camera.angle += (0 - FlxG.camera.angle) / 12;
+			if (!cs_wait)
+			{
+				cs_time ++;
+			}
+			tmr.reset(0.002);
+		});
+	}
+
+	var toDfS:Float = 1;
+	public function finalCutscene()
+	{
+		cs_zoom = defaultCamZoom;
+		cs_cam = new FlxObject(0, 0, 1, 1);
+		camFollow.setPosition(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
+		cs_cam.x = camFollow.x;
+		cs_cam.y = camFollow.y;
+		add(cs_cam);
+		remove(camFollow);
+		camFollow.destroy();
+		FlxG.camera.follow(cs_cam, LOCKON, 0.01);
+
+		new FlxTimer().start(0.002, function(tmr:FlxTimer)
+		{
+			switch (cs_time)
+			{
+				case 200:
+					cs_cam.x -= 500;
+					cs_cam.y -= 200;
+				case 400:
+					dad.playAnim('smile');
+				case 500:
+					if (!cs_wait)
+					{
+						csDial('sh_amazing');
+						schoolIntro(0);
+						cs_wait = true;
+						cs_reset = true;
+					}
+				case 700:
+					godCutEnd = false;
+					FlxG.sound.play(Paths.sound('burst'));
+					dad.playAnim('stand', true);
+					dad.x = 100;
+					dad.y = 100;
+					boyfriend.x = 770;
+					boyfriend.y = 450;
+					gf.x = 400;
+					gf.y = 130;
+					gf.scrollFactor.set(0.95, 0.95);
+					gf.setGraphicSize(Std.int(gf.width));
+					cs_cam.y = boyfriend.y;
+					cs_cam.x += 100;
+					cs_zoom = 0.8;
+					FlxG.camera.zoom = cs_zoom;
+					scoob.x = dad.x - 400;
+					scoob.y = 290;
+					scoob.flipX = true;
+					remove(shaggyT);
+					FlxG.camera.follow(cs_cam, LOCKON, 1);
+				case 800:
+					if (!cs_wait)
+					{
+						csDial('sh_expo');
+						schoolIntro(0);
+						cs_wait = true;
+						cs_reset = true;
+
+						cs_mus = FlxG.sound.load(Paths.sound('cs_finale'));
+						cs_mus.looped = true;
+						cs_mus.play();
+					}
+				case 840:
+					FlxG.sound.play(Paths.sound('exit'));
+					doorFrame.alpha = 1;
+					doorFrame.x -= 90;
+					doorFrame.y -= 130;
+					toDfS = 700;
+				case 1150:
+					if (!cs_wait)
+					{
+						csDial('sh_bye');
+						schoolIntro(0);
+						cs_wait = true;
+						cs_reset = true;
+					}
+				case 1400:
+					FlxG.sound.play(Paths.sound('exit'));
+					toDfS = 1;
+				case 1645:
+					cs_black = new FlxSprite(-500, -400).makeGraphic(FlxG.width * 4, FlxG.height * 4, FlxColor.BLACK);
+					cs_black.scrollFactor.set();
+					cs_black.alpha = 0;
+					add(cs_black);
+					cs_wait = true;
+					modCredits();
+					cs_time ++;
+				case -1:
+					if (!cs_wait)
+					{
+						csDial('troleo');
+						schoolIntro(0);
+						cs_wait = true;
+						cs_reset = true;
+					}
+				case 1651:
+					endSong();
+			}
+			if (cs_time > 700)
+			{
+				scoob.playAnim('idle');
+			}
+			if (cs_time > 1150)
+			{
+				scoob.alpha -= 0.004;
+				dad.alpha -= 0.004;
+			}
+			FlxG.camera.zoom += (cs_zoom - FlxG.camera.zoom) / 12;
+			if (!cs_wait)
+			{
+				cs_time ++;
+			}
+
+			dfS += (toDfS - dfS) / 18;
+			doorFrame.setGraphicSize(Std.int(dfS));
+			tmr.reset(0.002);
+		});
+	}
+	var title:FlxSprite;
+	var thanks:Alphabet;
+	var endtxt:Alphabet;
+	public function modCredits()
+	{
+		FlxG.sound.play(Paths.sound('cs_credits'));
+		new FlxTimer().start(0.002, function(btmr:FlxTimer)
+		{
+			cs_black.alpha += 0.0025;
+			btmr.reset(0.002);
+		});
+
+		new FlxTimer().start(3, function(tmrt:FlxTimer)
+		{
+			title = new FlxSprite(FlxG.width / 2 - 400, FlxG.height / 2 - 400).loadGraphic(Paths.image('sh_title'));
+			title.setGraphicSize(Std.int(title.width * 1.2));
+			title.antialiasing = true;
+			title.scrollFactor.set();
+			title.centerOffsets();
+			//title.active = false;
+			add(title);
+
+			new FlxTimer().start(2.5, function(tmrth:FlxTimer)
+			{
+				thanks = new Alphabet(0, FlxG.height / 2 + 300, "THANKS FOR PLAYING THIS MOD", true, false);
+				thanks.screenCenter(X);
+				thanks.x -= 150;
+				add(thanks);
+
+				new FlxTimer().start(2.5, function(tmrth:FlxTimer)
+				{
+					endtxt = new Alphabet(6, FlxG.height / 2 + 380, "THE END", true, false);
+					endtxt.screenCenter(X);
+					endtxt.x -= 150;
+					add(endtxt);
+
+					new FlxTimer().start(12, function(gback:FlxTimer)
+					{
+						cs_wait = false;
+					});
+				});
+			});
+		});
+	}
+	public function burstRelease(bX:Float, bY:Float)
+	{
+		FlxG.sound.play(Paths.sound('burst'));
+		remove(burst);
+		burst = new FlxSprite(bX - 1000, bY - 100);
+		burst.frames = Paths.getSparrowAtlas('shaggy');
+		burst.animation.addByPrefix('burst', "burst", 30);
+		burst.animation.play('burst');
+		//burst.setGraphicSize(Std.int(burst.width * 1.5));
+		burst.antialiasing = true;
+		add(burst);
+		new FlxTimer().start(0.5, function(rem:FlxTimer)
+		{
+			remove(burst);
+		});
+	}
+	var sh_kill_line:String = "Oh and next time you cut scooby in half I'm\nnot gonna pretend like singing is\nmy only option again.";
+	public function csDial(csIndex:String)
+	{
+		switch (csIndex)
+		{
+			case 'found_scooby':
+				dialogue = [
+					"Scooby!! where were you?!",
+					"I don't know shraggy, this mansion\nis really big!",
+					"I think I even sawr a monster, tho\nI don't remember wh..."
+				];
+				dface = [
+						"f_sh_happy",
+						"f_scb", "n"
+						];
+				dside = [1, -1, -1];
+			case 'scooby_hold_talk':
+				dialogue = [
+					"Like, what's wrong scoob?",
+					"The monster shraggy...",
+					"She's mean!",
+					"She scares me...",
+					"What are you talking about?\nThis lady?",
+					"She's like, totally cool man!",
+					"Why are you saying that"
+				];
+				dface = [
+						"f_sh_ser",
+						"f_scb_scared", "n", "n",
+						"f_sh_con", "f_sh_smug", "f_sh"
+						];
+				dside = [1, 1, 1, 1, 1, 1, 1];
+			case 'gf_sass':
+				dialogue = [
+					"BEP?!",
+					"Will that get you to sing for real\nthis time?"
+				];
+				dface = [
+						"f_bf_scared",
+						"f_gf"
+						];
+				dside = [-1, -1];
+			case 'sh_amazing':
+				dialogue = [
+					"...",
+					"Amazing!"
+				];
+				dface = [
+						"f_sh_smug",
+						"f_sh_smug"
+						];
+				dside = [1, 1];
+			case 'sh_expo':
+				dialogue = [
+					"I scared you didn't I?",
+					"bee",
+					"I don't even need a finger snap to like,\nbring every dead being in this planet\nback to life",
+					"Wouldn't have killed your dog if\nI didn't know that",
+					"...",
+					"Anyways, to tell you the truth Scooby\nwas looking for you.",
+					"We came to your universe because we\nheard a teenager was like, immortal",
+					"And you beat me first try!",
+					"From my perspective at least...",
+					"I'm guessing you have some time resetting\nability so I'm glad I didn't go\nfull power against you.",
+					"baap be?",
+					"0.002%",
+					"a",
+					"Welp, we gotta go and stuff."
+				];
+				dface = [
+						"f_sh_smug",
+						"f_bf_a",
+						"f_sh",
+						"f_gf",
+						"f_sh_ser", "f_sh", "n", "f_sh_smug", "f_sh_con", "n",
+						"f_bf",
+						"f_sh",
+						"f_bf_a",
+						"f_sh"
+						];
+				dside = [1, -1, 1, -1, 1, 1, 1, 1, 1, 1, -1, 1, -1, 1];
+			case "sh_bye":
+				dialogue = [
+					"I heard they're gathering up some powerful\nindividuals for a tournament in\na universe close by...",
+					"And if saitama's gonna be there, I can't\nmiss it.",
+					"So like, goodbye! For now at least.",
+					sh_kill_line
+				];
+				dface = [
+						"f_sh",
+						"f_sh_smug",
+						"f_sh",
+						"f_sh_kill"
+				];
+				dside = [1, 1, 1, 1];
+			case "troleo":
+				dialogue = [
+					"Chupenme la corneta giles culiaooos!!!!",
+					"You speak everything but english huh"
+				];
+				dface = [
+						"f_bf_burn",
+						"f_gf"
+				];
+				dside = [-1, -1];
 		}
 	}
 }
